@@ -9,6 +9,7 @@ import { BsGithub, BsGoogle } from 'react-icons/bs'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { signIn } from 'next-auth/react'
+import { redirect } from 'next/navigation'
 
 type variant = 'LOGIN' | 'REGISTER'
 const AuthForm = () => {
@@ -67,6 +68,7 @@ const AuthForm = () => {
 
                 if (callback?.ok && !callback?.error)
                     toast.success('Login Successful...!✅')
+                redirect('/welcome')
             })
             .finally(() => setIsLoading(false))
     }
