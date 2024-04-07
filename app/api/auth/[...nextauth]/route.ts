@@ -5,6 +5,7 @@ import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 
+
 import prisma from '@/app/libs/prismadb'
 
 export const authOptions: AuthOptions = {
@@ -17,7 +18,7 @@ export const authOptions: AuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-          }),
+        }),
         CredentialsProvider({
             name: 'credentials',
             credentials: {
@@ -57,6 +58,6 @@ export const authOptions: AuthOptions = {
     secret: process.env.NEXTAUTH_SECRET
 }
 
-const handler = NextAuth( authOptions )
+const handler = NextAuth(authOptions)
 
-export { handler as GET , handler as POST }
+export { handler as GET, handler as POST }
