@@ -9,19 +9,20 @@ import { BsGithub, BsGoogle } from 'react-icons/bs'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { signIn, useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 type variant = 'LOGIN' | 'REGISTER'
 const AuthForm = () => {
-    const session = useSession();
+    const session = useSession()
+    const router = useRouter()
     const [variant, setVariant] = useState<variant>('LOGIN')
     const [isLoading, setIsLoading] = useState(false)
 
-    useEffect(()=>{
-        if(session?.status === "authenticated"){
-            console.log("authenticated")
+    useEffect(() => {
+        if (session?.status === 'authenticated') {
+            router.push('/users')
         }
-    },[session?.status])
+    }, [session?.status, router])
 
     const toggleVariant = useCallback(() => {
         variant === 'LOGIN' ? setVariant('REGISTER') : setVariant('LOGIN')
@@ -45,6 +46,7 @@ const AuthForm = () => {
         if (variant === 'REGISTER') {
             axios
                 .post('/api/register', data) // this is the route because of the folder hieraracy we use api/register
+                .then(() => signIn('credentials', data))
                 .catch(() => toast.error('Something went wrong...!❌'))
                 .finally(() => setIsLoading(false))
         } else if (variant === 'LOGIN') {
@@ -59,6 +61,7 @@ const AuthForm = () => {
 
                     if (callback?.ok && !callback?.error) {
                         toast.success('Logged In...!✅')
+                        router.push('/users')
                     }
                 })
                 .finally(() => setIsLoading(false))
@@ -71,11 +74,12 @@ const AuthForm = () => {
         signIn(action, { redirect: false })
             .then((callback) => {
                 if (callback?.error)
-                    toast.error(`Unable to SignIn Using ${action} account...!❌`)
+                    toast.error(
+                        `Unable to SignIn Using ${action} account...!❌`
+                    )
 
                 if (callback?.ok && !callback?.error)
                     toast.success('Login Successful...!✅')
-                redirect('/welcome')
             })
             .finally(() => setIsLoading(false))
     }
