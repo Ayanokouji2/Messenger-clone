@@ -19,7 +19,7 @@ const DesktopItem: React.FC<DesktopItemProps> = ({
     active,
 }) => {
     const handleClick = () => {
-        if (onClick) return onClick
+        if (onClick) return onClick()
     }
 
     return (
@@ -33,7 +33,7 @@ const DesktopItem: React.FC<DesktopItemProps> = ({
                 )}
             >
                 <Icon className="h-6 w-6 shrink-0" />
-                <span>{label}</span>
+                <span className='sr-only'>{label}</span>     {/*className="sr-only" hide Name of the list from client and makes it available at server end helps in better SEO */}
             </Link>
         </li>
     )

@@ -15,13 +15,14 @@ const DesktopSidebar = () => {
                     className="flex flex-col items-center space-y-1"
                 >
                     {routes.map((item) => (
+                        
                         <DesktopItem
                             key={item.label}
                             href={item.href}
                             label={item.label}
                             icon={item.icon}
                             active={item.active}
-                            onClick={item?.onClick}
+                            onClick={item.onClick}
                         />
                     ))}
                 </ul>
